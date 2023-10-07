@@ -1,3 +1,3 @@
 namespace FlexReport.API.Models.Requests;
 
-public record SyncRequest(string DbConnectionString);
+public record SyncRequest(string Name, string DbConnectionString);

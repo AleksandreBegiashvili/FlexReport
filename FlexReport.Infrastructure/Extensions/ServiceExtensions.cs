@@ -1,4 +1,5 @@
-﻿using FlexReport.Infrastructure.Persistence;
+﻿using FlexReport.Application.Common.Interfaces;
+using FlexReport.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@ public static class ServiceExtensions
         {
             options.UseSqlServer(configuration.GetConnectionString("FlexReportDb"));
         });
+
+        services.AddScoped<IFlexReportDbContext>(provider => provider.GetRequiredService<FlexReportDbContext>());
 
         return services;
     }

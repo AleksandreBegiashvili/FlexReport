@@ -1,25 +1,32 @@
 ﻿using FlexReport.API.Models.Requests;
+using FlexReport.Application.Models.Requests;
 using FlexReport.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/sync")]
 [ApiController]
 public class SyncController : ControllerBase
 {
-    private readonly IDbSchemaGenerator _dbSchemaGenerator;
+    private readonly ICustomerService _customerService;
 
-    public SyncController(IDbSchemaGenerator dbSchemaGenerator)
+    public SyncController(ICustomerService customerService)
     {
-        _dbSchemaGenerator = dbSchemaGenerator;
+        _customerService = customerService;
     }
 
-    [HttpPost]
-    public IActionResult Sync([FromBody] SyncRequest request)
+    [HttpPost("customer")]
+    public IActionResult SynchronizeCustomer([FromBody] SyncRequest request)
     {
-        var dbSchema = _dbSchemaGenerator.Generate(request.DbConnectionString);
+        var customerId = _customerService.SynchronizeCustomer(
+            new SynchronizeCustomerRequest(
+                request.Name,
+                request.DbConnectionString));
 
-        return Ok(dbSchema);
+        return Ok(new
+        {
+            CusomterId = customerId
+        });
     }
 }
