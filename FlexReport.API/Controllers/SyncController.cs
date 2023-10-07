@@ -17,9 +17,9 @@ public class SyncController : ControllerBase
     }
 
     [HttpPost("customer")]
-    public IActionResult SynchronizeCustomer([FromBody] SyncRequest request)
+    public async Task<IActionResult> SynchronizeCustomer([FromBody] SyncRequest request)
     {
-        var customerId = _customerService.SynchronizeCustomer(
+        var customerId = await _customerService.SynchronizeCustomer(
             new SynchronizeCustomerRequest(
                 request.Name,
                 request.DbConnectionString));
