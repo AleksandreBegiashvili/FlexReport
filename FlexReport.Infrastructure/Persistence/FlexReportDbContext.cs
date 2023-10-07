@@ -10,8 +10,8 @@ public class FlexReportDbContext : DbContext, IFlexReportDbContext
     {
     }
 
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Report> Reports { get; set; }
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Report> Reports => Set<Report>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

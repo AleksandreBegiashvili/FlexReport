@@ -29,7 +29,8 @@ public class CustomerService : ICustomerService
         };
 
         await _flexReportDbContext.Customers.AddAsync(customer);
-
-        return await _flexReportDbContext.SaveChangesAsync(CancellationToken.None);
+        await _flexReportDbContext.SaveChangesAsync(CancellationToken.None);
+            
+        return customer.Id;
     }
 }
