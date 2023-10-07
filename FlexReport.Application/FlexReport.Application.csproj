@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FlexReport.Domain\FlexReport.Domain.csproj"/>
+        <ProjectReference Include="..\FlexReport.Domain\FlexReport.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.18.0"/>
+        <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.18.0" />
     </ItemGroup>
 
 </Project>

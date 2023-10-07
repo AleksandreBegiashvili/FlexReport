@@ -39,9 +39,5 @@ public class DbSchemaGenerator : IDbSchemaGenerator
     }
 
     private static string ExtractDbName(string connectionString)
-    {
-        var builder = new SqlConnectionStringBuilder(connectionString);
-
-        return builder.InitialCatalog;
-    }
+        => new SqlConnectionStringBuilder(connectionString).InitialCatalog;
 }
