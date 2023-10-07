@@ -3,9 +3,9 @@
 public class Customer
 {
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string ConnectionString { get; set; } = string.Empty;
-    public string DatabaseSchema { get; set; } = string.Empty;
+    public required string Name { get; set; }
+    public required string ConnectionString { get; set; }
+    public required string DatabaseSchema { get; set; }
 
-    public ICollection<Report>? Reports { get; set; }
+    public virtual ICollection<Report>? Reports { get; set; }
 }
