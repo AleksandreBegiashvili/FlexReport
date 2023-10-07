@@ -1,42 +1,29 @@
-﻿using FlexReport.Application.Integrations.OpenAI;
-using FlexReport.Domain.Entities;
-using FlexReport.Infrastructure.Persistence;
+﻿using FlexReport.Application.Models.Requests;
+using FlexReport.Application.Models.Responses;
+using FlexReport.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/report")]
 [ApiController]
 public class ReportController : ControllerBase
 {
-    private readonly FlexReportDbContext _context;
-    private readonly IOpenAIClient _openAIClient;
+    private readonly IReportService _reportService;
 
-    public ReportController(FlexReportDbContext context, IOpenAIClient openAIClient)
+    public ReportController(IReportService reportService)
     {
-        _context = context;
-        _openAIClient = openAIClient;
+        _reportService = reportService;
     }
 
-    [HttpPost("GenerateQuery")]
-    public async Task<ActionResult<string>> GenerateQuery(int customerId, string prompt)
+    [HttpPost]
+    public async Task<ActionResult<CreateReportResponse>> CreateReport(CreateReportRequest request)
     {
-        var customer = _context.Customers.FirstOrDefault(c => c.Id == customerId)
-            ?? throw new Exception("Customer was not found");
+        var createReportRequest = new CreateReportRequest(request.CustomerId, request.Prompt);
+        var result = await _reportService.CreateReport(createReportRequest);
 
-        var schema = customer.DatabaseSchema;
-
-        var queryResponse = await _openAIClient.SendMessage(schema, prompt);
-
-        var report = new Report
-        {
-            CustomerId = customerId,
-            Prompt = prompt,
-            Query = queryResponse
-        };
-        _context.Reports.Add(report);
-        await _context.SaveChangesAsync();
-
-        return Ok(queryResponse);
+        return Ok(result);
     }
+
+    //[HttpPost("Execute")]
 }
