@@ -4,8 +4,8 @@ public class Report
 {
     public int Id { get; set; }
     public int CustomerId { get; set; }
-    public string Query { get; set; } = string.Empty;
-    public string Prompt { get; set; } = string.Empty;
+    public required string Query { get; set; }
+    public required string Prompt { get; set; }
 
-    public Customer? Customer { get; set; }
+    public virtual Customer? Customer { get; set; }
 }

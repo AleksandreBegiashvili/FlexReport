@@ -1,9 +1,10 @@
-﻿using FlexReport.Domain.Entities;
+﻿using FlexReport.Application.Common.Interfaces;
+using FlexReport.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlexReport.Infrastructure.Persistence;
 
-public class FlexReportDbContext : DbContext
+public class FlexReportDbContext : DbContext, IFlexReportDbContext
 {
     public FlexReportDbContext(DbContextOptions<FlexReportDbContext> options) : base(options)
     {

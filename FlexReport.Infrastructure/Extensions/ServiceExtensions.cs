@@ -18,6 +18,8 @@ public static class ServiceExtensions
 
         services.AddSingleton<IOpenAIClient, OpenAIClient>();
 
+        services.AddScoped<IFlexReportDbContext>(provider => provider.GetRequiredService<FlexReportDbContext>());
+
         return services;
     }
 }
