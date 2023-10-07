@@ -1,4 +1,5 @@
-﻿using FlexReport.Application.Models.Requests;
+﻿using FlexReport.API.Models.Requests;
+using FlexReport.Application.Models.Requests;
 using FlexReport.Application.Models.Responses;
 using FlexReport.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
@@ -25,5 +26,11 @@ public class ReportController : ControllerBase
         return Ok(result);
     }
 
-    //[HttpPost("Execute")]
+    [HttpPost("Execute")]
+    public async Task<ActionResult<object>> ExecuteReport(ExecuteReportRequest request)
+    {
+        var result = await _reportService.ExecuteReport(request.CustomerId, request.ReportId);
+
+        return Ok(result);
+    }
 }

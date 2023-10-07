@@ -1,5 +1,7 @@
 ﻿using FlexReport.Application.Common.Interfaces;
+using FlexReport.Application.Integrations.DataAccess;
 using FlexReport.Application.Integrations.OpenAI;
+using FlexReport.Infrastructure.Integrations.DataAccess;
 using FlexReport.Infrastructure.Integrations.OpenAI;
 using FlexReport.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,7 @@ public static class ServiceExtensions
         });
 
         services.AddSingleton<IOpenAIClient, OpenAIClient>();
-
+        services.AddScoped<IDataAccess, SqlServerDataAccess>();
         services.AddScoped<IFlexReportDbContext>(provider => provider.GetRequiredService<FlexReportDbContext>());
 
         return services;
