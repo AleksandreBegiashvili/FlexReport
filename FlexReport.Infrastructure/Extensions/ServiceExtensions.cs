@@ -1,4 +1,5 @@
-﻿using FlexReport.Application.Integrations.OpenAI;
+﻿using FlexReport.Application.Common.Interfaces;
+using FlexReport.Application.Integrations.OpenAI;
 using FlexReport.Infrastructure.Integrations.OpenAI;
 using FlexReport.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
