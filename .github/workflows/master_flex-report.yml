@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'flex-report'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9F5732CE96B44E60906456453483C79B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1BF7AEB14444D0CBE40C856A5AA77EA }}
           package: .
