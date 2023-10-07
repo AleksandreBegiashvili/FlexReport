@@ -10,4 +10,8 @@
     <ProjectReference Include="..\FlexReport.Application\FlexReport.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
+
 </Project>
