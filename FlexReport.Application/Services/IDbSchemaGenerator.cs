@@ -2,5 +2,5 @@ namespace FlexReport.Application.Services;
 
 public interface IDbSchemaGenerator
 {
-    string Generate(string connectionString, string databaseName);
+    string Generate(string connectionString);
 }

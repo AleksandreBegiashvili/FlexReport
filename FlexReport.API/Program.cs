@@ -1,8 +1,11 @@
+using FlexReport.Application.Services;
 using FlexReport.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistence(builder.Configuration);
+
+builder.Services.AddScoped<IDbSchemaGenerator, DbSchemaGenerator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

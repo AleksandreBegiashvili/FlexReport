@@ -6,11 +6,13 @@ namespace FlexReport.Application.Services;
 
 public class DbSchemaGenerator : IDbSchemaGenerator
 {
-    public string Generate(string connectionString, string databaseName)
+    public string Generate(string connectionString)
     {
         using var sqlConnection = new SqlConnection(connectionString);
 
         var server = new Server(new ServerConnection(sqlConnection));
+
+        var databaseName = ExtractDbName(connectionString);
 
         var database = server.Databases[databaseName];
 
@@ -34,5 +36,12 @@ public class DbSchemaGenerator : IDbSchemaGenerator
         var dbSchema = string.Join('\n', scripter.Script(urns).OfType<string>());
 
         return dbSchema;
+    }
+
+    private static string ExtractDbName(string connectionString)
+    {
+        var builder = new SqlConnectionStringBuilder(connectionString);
+
+        return builder.InitialCatalog;
     }
 }
