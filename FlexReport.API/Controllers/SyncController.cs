@@ -1,6 +1,6 @@
 ﻿using FlexReport.API.Models.Requests;
 using FlexReport.Application.Models.Requests;
-using FlexReport.Application.Services;
+using FlexReport.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;

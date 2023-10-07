@@ -4,7 +4,7 @@ using FlexReport.Infrastructure.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddPersistence(builder.Configuration)
+    .AddInfrastructure(builder.Configuration)
     .AddApplication(builder.Configuration);
 
 builder.Services.AddCors(options =>

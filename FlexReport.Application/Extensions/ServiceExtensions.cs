@@ -1,4 +1,5 @@
-using FlexReport.Application.Services;
+using FlexReport.Application.Services.Abstractions;
+using FlexReport.Application.Services.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IDbSchemaGenerator, DbSchemaGenerator>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IReportService, ReportService>();
 
         return services;
     }
