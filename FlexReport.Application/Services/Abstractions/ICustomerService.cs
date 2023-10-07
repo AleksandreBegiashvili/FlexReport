@@ -1,6 +1,6 @@
 using FlexReport.Application.Models.Requests;
 
-namespace FlexReport.Application.Services;
+namespace FlexReport.Application.Services.Abstractions;
 
 public interface ICustomerService
 {

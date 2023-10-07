@@ -1,8 +1,9 @@
 using FlexReport.Application.Common.Interfaces;
 using FlexReport.Application.Models.Requests;
+using FlexReport.Application.Services.Abstractions;
 using FlexReport.Domain.Entities;
 
-namespace FlexReport.Application.Services;
+namespace FlexReport.Application.Services.Implementations;
 
 public class CustomerService : ICustomerService
 {
