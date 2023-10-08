@@ -1,4 +1,8 @@
 ﻿using FlexReport.Application.Integrations.OpenAI;
+using FlexReport.Domain.Exceptions;
+using FlexReport.Infrastructure.Configuration;
+using FlexReport.Infrastructure.Constants;
+using Microsoft.Extensions.Options;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -6,48 +10,54 @@ namespace FlexReport.Infrastructure.Integrations.OpenAI;
 
 public class OpenAIClient : IOpenAIClient
 {
-    private const string _openAIKey = "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";
-    private const string _chatGptModel = "gpt-3.5-turbo-16k";
-    private const int _maxTokens = 3000;
-    private const int _frequencyPenalty = 0;
-    private const double _temperature = 0.7;
-    private const string _systemMessage = "You are an AI assistant tasked to generate SQL queries given database schema and prompt.";
-    private const string _explanation = "Let's think step by step:" +
-        "1. Analyze the provided database schema" +
-        "2. Correctly use column names and pay attention to junction tables for many-to-many relationships" +
-        "3. Generate the correct SQL query based on the prompt, think twice.";
+    private readonly OpenAIConfiguration _openAIClientConfiguration;
+
+    public OpenAIClient(IOptions<OpenAIConfiguration> options)
+    {
+        _openAIClientConfiguration = options.Value;
+    }
 
     public async Task<string> SendMessage(string schema, string prompt)
     {
-        var authentication = new APIAuthentication(_openAIKey);
+        var authentication = new APIAuthentication(_openAIClientConfiguration.ApiKey);
         var api = new OpenAIAPI(authentication);
 
         var request = BuildChatRequest(schema, prompt);
         var result = await api.Chat.CreateChatCompletionAsync(request);
 
-        var queryMessage = result.Choices[result.Choices.Count - 1]?.Message?.Content;
-
-        if (string.IsNullOrWhiteSpace(queryMessage))
-        {
-            throw new Exception("Failed to receive response from ChatGPT");
-        }
-
-        return queryMessage;
+        return ExtractQuery(result);
     }
 
-    private static ChatRequest BuildChatRequest(string schema, string prompt)
+    private ChatRequest BuildChatRequest(string schema, string prompt)
         => new()
         {
-            Model = _chatGptModel,
-            MaxTokens = _maxTokens,
-            FrequencyPenalty = _frequencyPenalty,
-            Temperature = _temperature,
+            Model = _openAIClientConfiguration.ChatGptModel,
+            MaxTokens = _openAIClientConfiguration.MaxTokens,
+            FrequencyPenalty = _openAIClientConfiguration.FrequencyPenalty,
+            Temperature = _openAIClientConfiguration.Temperature,
             Messages = new List<ChatMessage>()
             {
-                new ChatMessage(ChatMessageRole.System, _systemMessage),
-                new ChatMessage(ChatMessageRole.User, _explanation),
+                new ChatMessage(ChatMessageRole.System, OpenAIConstants.SystemMessage),
+                new ChatMessage(ChatMessageRole.User, OpenAIConstants.Explanation),
                 new ChatMessage(ChatMessageRole.User, $"Here is the schema: {schema}"),
                 new ChatMessage(ChatMessageRole.User, $"Write the SQL query based on above schema for the following prompt: {prompt}")
             }
         };
+
+    private static string ExtractQuery(ChatResult result)
+    {
+        var message = result.Choices[result.Choices.Count - 1]?.Message?.Content;
+
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            throw new InvalidChatGptResponseException();
+        }
+
+        var startIndex = message.IndexOf(OpenAIConstants.SqlStartSeparator);
+        var endIndex = message.LastIndexOf(OpenAIConstants.SqlEndSeparator);
+
+        var query = message[(startIndex + OpenAIConstants.SqlStartSeparator.Length)..endIndex];
+
+        return query;
+    }
 }
