@@ -11,19 +11,20 @@ namespace FlexReport.Infrastructure.Integrations.OpenAI;
 public class OpenAIClient : IOpenAIClient
 {
     private readonly OpenAIConfiguration _openAIClientConfiguration;
+    private readonly IOpenAIAPI _openAIApi;
 
-    public OpenAIClient(IOptions<OpenAIConfiguration> options)
+    public OpenAIClient(
+        IOpenAIAPI openAIApi,
+        IOptions<OpenAIConfiguration> options)
     {
         _openAIClientConfiguration = options.Value;
+        _openAIApi = openAIApi;
     }
 
     public async Task<string> SendMessage(string schema, string prompt)
     {
-        var authentication = new APIAuthentication(_openAIClientConfiguration.ApiKey);
-        var api = new OpenAIAPI(authentication);
-
         var request = BuildChatRequest(schema, prompt);
-        var result = await api.Chat.CreateChatCompletionAsync(request);
+        var result = await _openAIApi.Chat.CreateChatCompletionAsync(request);
 
         return ExtractQuery(result);
     }
@@ -56,8 +57,13 @@ public class OpenAIClient : IOpenAIClient
         var startIndex = message.IndexOf(OpenAIConstants.SqlStartSeparator);
         var endIndex = message.LastIndexOf(OpenAIConstants.SqlEndSeparator);
 
-        var query = message[(startIndex + OpenAIConstants.SqlStartSeparator.Length)..endIndex];
+        if (startIndex != -1 && endIndex != -1)
+        {
+            return message[(startIndex + OpenAIConstants.SqlStartSeparator.Length)..endIndex];
+            //throw new InvalidChatGptResponseException();
+        }
 
-        return query;
+
+        return message;
     }
 }
