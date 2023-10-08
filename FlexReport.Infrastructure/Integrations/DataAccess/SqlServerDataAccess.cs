@@ -24,7 +24,7 @@ public class SqlServerDataAccess : IDataAccess
 
         await using var dataReader = await command.ExecuteReaderAsync();
 
-        var data = new List<SqlServerDataRecord>();
+        var data = new List<SqlServerDataRow>();
 
         while (await dataReader.ReadAsync())
         {
@@ -38,7 +38,7 @@ public class SqlServerDataAccess : IDataAccess
                 rowValues.Add(stringRepresentation);
             }
 
-            data.Add(new SqlServerDataRecord(rowValues));
+            data.Add(new SqlServerDataRow(rowValues));
         }
 
         return new GetDataResponse(data, totalCount);
