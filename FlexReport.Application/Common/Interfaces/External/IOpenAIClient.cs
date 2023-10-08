@@ -1,4 +1,4 @@
-﻿namespace FlexReport.Application.Integrations.OpenAI;
+﻿namespace FlexReport.Application.Common.Interfaces.External;
 
 public interface IOpenAIClient
 {

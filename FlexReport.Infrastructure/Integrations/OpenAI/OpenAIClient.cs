@@ -1,4 +1,4 @@
-﻿using FlexReport.Application.Integrations.OpenAI;
+﻿using FlexReport.Application.Common.Interfaces.External;
 using FlexReport.Domain.Exceptions;
 using FlexReport.Infrastructure.Configuration;
 using FlexReport.Infrastructure.Constants;

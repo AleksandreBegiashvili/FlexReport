@@ -1,6 +1,5 @@
 ﻿using FlexReport.Application.Common.Interfaces;
-using FlexReport.Application.Integrations.DataAccess;
-using FlexReport.Application.Integrations.OpenAI;
+using FlexReport.Application.Common.Interfaces.External;
 using FlexReport.Infrastructure.Configuration;
 using FlexReport.Infrastructure.Integrations.DataAccess;
 using FlexReport.Infrastructure.Integrations.OpenAI;

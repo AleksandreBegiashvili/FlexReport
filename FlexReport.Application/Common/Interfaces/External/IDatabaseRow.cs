@@ -1,4 +1,4 @@
-﻿namespace FlexReport.Application.Integrations.DataAccess;
+﻿namespace FlexReport.Application.Common.Interfaces.External;
 
 public interface IDatabaseRow
 {

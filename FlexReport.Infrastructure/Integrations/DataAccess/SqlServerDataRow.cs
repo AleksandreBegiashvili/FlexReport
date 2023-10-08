@@ -1,4 +1,4 @@
-﻿using FlexReport.Application.Integrations.DataAccess;
+﻿using FlexReport.Application.Common.Interfaces.External;
 
 namespace FlexReport.Infrastructure.Integrations.DataAccess;
 
