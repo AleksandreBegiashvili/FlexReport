@@ -1,4 +1,6 @@
 ﻿using FlexReport.Application.Integrations.OpenAI;
+using FlexReport.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
 using OpenAI_API;
 using OpenAI_API.Chat;
 
@@ -6,11 +8,13 @@ namespace FlexReport.Infrastructure.Integrations.OpenAI;
 
 public class OpenAIClient : IOpenAIClient
 {
-    private const string _openAIKey = "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";
-    private const string _chatGptModel = "gpt-3.5-turbo-16k";
-    private const int _maxTokens = 3000;
-    private const int _frequencyPenalty = 0;
-    private const double _temperature = 0.7;
+    private readonly OpenAIConfiguration _openAIClientConfiguration;
+
+    public OpenAIClient(IOptions<OpenAIConfiguration> options)
+    {
+        _openAIClientConfiguration = options.Value;
+    }
+
     private const string _systemMessage = "You are an AI assistant tasked to generate SQL queries given database schema and prompt.";
     private const string _explanation = "Let's think step by step:" +
         "1. Analyze the provided database schema;" +
@@ -19,22 +23,22 @@ public class OpenAIClient : IOpenAIClient
 
     public async Task<string> SendMessage(string schema, string prompt)
     {
-        var authentication = new APIAuthentication(_openAIKey);
+        var authentication = new APIAuthentication(_openAIClientConfiguration.ApiKey);
         var api = new OpenAIAPI(authentication);
 
         var request = BuildChatRequest(schema, prompt);
         var result = await api.Chat.CreateChatCompletionAsync(request);
 
         return ExtractQuery(result);
-        }
+    }
 
-    private static ChatRequest BuildChatRequest(string schema, string prompt)
+    private ChatRequest BuildChatRequest(string schema, string prompt)
         => new()
         {
-            Model = _chatGptModel,
-            MaxTokens = _maxTokens,
-            FrequencyPenalty = _frequencyPenalty,
-            Temperature = _temperature,
+            Model = _openAIClientConfiguration.ChatGptModel,
+            MaxTokens = _openAIClientConfiguration.MaxTokens,
+            FrequencyPenalty = _openAIClientConfiguration.FrequencyPenalty,
+            Temperature = _openAIClientConfiguration.Temperature,
             Messages = new List<ChatMessage>()
             {
                 new ChatMessage(ChatMessageRole.System, _systemMessage),
