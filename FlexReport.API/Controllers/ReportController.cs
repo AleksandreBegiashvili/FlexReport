@@ -25,7 +25,7 @@ public class ReportController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("Execute")]
+    [HttpPost("execute")]
     public async Task<ActionResult<ExecuteReportResponse>> ExecuteReport(ExecuteReportRequest request)
     {
         var result = await _reportService.ExecuteReport(new ExecuteReportRequest(
