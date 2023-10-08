@@ -1,4 +1,5 @@
-﻿using FlexReport.Application.Reports.Commands;
+﻿using FlexReport.API.Handlers;
+using FlexReport.Application.Reports.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace FlexReport.API.Controllers;
 
 [Route("api/report")]
 [ApiController]
+[ApiExceptionFilter]
 public class ReportController : ControllerBase
 {
     private readonly IMediator _mediator;

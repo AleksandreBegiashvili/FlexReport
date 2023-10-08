@@ -1,3 +1,4 @@
+using FlexReport.Application.Common.Exceptions;
 using FlexReport.Application.Common.Interfaces;
 using FlexReport.Application.Common.Interfaces.External;
 using FlexReport.Domain.Entities;
@@ -25,7 +26,7 @@ public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, R
     public async Task<ReportDto> Handle(CreateReportCommand request, CancellationToken cancellationToken)
     {
         var customer = _flexReportDbContext.Customers.FirstOrDefault(c => c.Id == request.CustomerId)
-                       ?? throw new Exception("Customer was not found");
+                       ?? throw new NotFoundException("Customer was not found");
 
         var schema = customer.DatabaseSchema;
 

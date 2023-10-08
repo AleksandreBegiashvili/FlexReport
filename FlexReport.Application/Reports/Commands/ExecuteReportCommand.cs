@@ -1,3 +1,4 @@
+using FlexReport.Application.Common.Exceptions;
 using FlexReport.Application.Common.Interfaces;
 using FlexReport.Application.Common.Interfaces.External;
 using FlexReport.Application.Common.Models;
@@ -30,10 +31,10 @@ public class ExecuteReportCommandHandler : IRequestHandler<ExecuteReportCommand,
         var customer = _flexReportDbContext.Customers
                            .Include(c => c.Reports)
                            .FirstOrDefault(c => c.Id == request.CustomerId)
-                       ?? throw new Exception("Customer was not found");
+                       ?? throw new NotFoundException("Customer was not found");
 
         var report = customer.Reports!.FirstOrDefault(r => r.Id == request.ReportId)
-                     ?? throw new Exception("Report not found for the specified customer");
+                     ?? throw new NotFoundException("Report not found for the specified customer");
 
         var result = await _dataAccess.GetData(new GetDataRequest(
             customer.ConnectionString,

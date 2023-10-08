@@ -1,4 +1,5 @@
-﻿using FlexReport.Application.Customers.Commands;
+﻿using FlexReport.API.Handlers;
+using FlexReport.Application.Customers.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace FlexReport.API.Controllers;
 
 [Route("api/sync")]
 [ApiController]
+[ApiExceptionFilter]
 public class SyncController : ControllerBase
 {
     private readonly IMediator _mediator;
