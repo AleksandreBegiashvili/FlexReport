@@ -1,4 +1,4 @@
-namespace FlexReport.Application.Services.Abstractions;
+namespace FlexReport.Application.Common.Interfaces;
 
 public interface IDbSchemaGenerator
 {

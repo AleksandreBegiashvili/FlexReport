@@ -1,6 +1,5 @@
-﻿using FlexReport.Application.Integrations.DataAccess;
-using FlexReport.Application.Models.Requests;
-using FlexReport.Application.Models.Responses;
+﻿using FlexReport.Application.Common.Interfaces.External;
+using FlexReport.Application.Common.Models;
 using Microsoft.Data.SqlClient;
 
 namespace FlexReport.Infrastructure.Integrations.DataAccess;

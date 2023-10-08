@@ -1,6 +1,5 @@
-﻿using FlexReport.Application.Models.Requests;
-using FlexReport.Application.Models.Responses;
-using FlexReport.Application.Services.Abstractions;
+﻿using FlexReport.Application.Reports.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;
@@ -9,31 +8,18 @@ namespace FlexReport.API.Controllers;
 [ApiController]
 public class ReportController : ControllerBase
 {
-    private readonly IReportService _reportService;
+    private readonly IMediator _mediator;
 
-    public ReportController(IReportService reportService)
+    public ReportController(IMediator mediator)
     {
-        _reportService = reportService;
+        _mediator = mediator;
     }
 
     [HttpPost]
-    public async Task<ActionResult<CreateReportResponse>> CreateReport(CreateReportRequest request)
-    {
-        var createReportRequest = new CreateReportRequest(request.CustomerId, request.Prompt);
-        var result = await _reportService.CreateReport(createReportRequest);
-
-        return Ok(result);
-    }
+    public async Task<ActionResult<ReportDto>> CreateReport(CreateReportCommand command) =>
+        Ok(await _mediator.Send(command));
 
     [HttpPost("execute")]
-    public async Task<ActionResult<ExecuteReportResponse>> ExecuteReport(ExecuteReportRequest request)
-    {
-        var result = await _reportService.ExecuteReport(new ExecuteReportRequest(
-            request.CustomerId,
-            request.ReportId,
-            request.Page,
-            request.PageSize));
-
-        return Ok(result);
-    }
+    public async Task<ActionResult<ExecutedReportDto>> ExecuteReport(ExecuteReportCommand command) =>
+        Ok(await _mediator.Send(command));
 }

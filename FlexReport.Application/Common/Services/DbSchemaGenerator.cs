@@ -1,9 +1,9 @@
-using FlexReport.Application.Services.Abstractions;
+using FlexReport.Application.Common.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace FlexReport.Application.Services.Implementations;
+namespace FlexReport.Application.Common.Services;
 
 public class DbSchemaGenerator : IDbSchemaGenerator
 {

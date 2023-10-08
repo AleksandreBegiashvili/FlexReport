@@ -1,5 +1,6 @@
-using FlexReport.Application.Services.Abstractions;
-using FlexReport.Application.Services.Implementations;
+using System.Reflection;
+using FlexReport.Application.Common.Interfaces;
+using FlexReport.Application.Common.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,9 +10,9 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
         services.AddScoped<IDbSchemaGenerator, DbSchemaGenerator>();
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IReportService, ReportService>();
 
         return services;
     }
