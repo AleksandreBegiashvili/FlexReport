@@ -6,5 +6,5 @@ namespace FlexReport.Application.Services.Abstractions;
 public interface IReportService
 {
     Task<CreateReportResponse> CreateReport(CreateReportRequest request);
-    Task<IEnumerable<IEnumerable<string>>> ExecuteReport(int customerId, int reportId);
+    Task<ExecuteReportResponse> ExecuteReport(ExecuteReportRequest request);
 }

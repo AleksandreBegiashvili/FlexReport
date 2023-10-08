@@ -1,6 +1,9 @@
-﻿namespace FlexReport.Application.Integrations.DataAccess;
+﻿using FlexReport.Application.Models.Requests;
+using FlexReport.Application.Models.Responses;
+
+namespace FlexReport.Application.Integrations.DataAccess;
 
 public interface IDataAccess
 {
-    Task<IEnumerable<IDatabaseRecord>> GetData(string connectionString, string query);
+    Task<GetDataResponse> GetData(GetDataRequest request);
 }

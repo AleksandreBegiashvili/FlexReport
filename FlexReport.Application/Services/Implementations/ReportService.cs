@@ -11,9 +11,9 @@ namespace FlexReport.Application.Services.Implementations;
 
 public class ReportService : IReportService
 {
+    private readonly IDataAccess _dataAccess;
     private readonly IFlexReportDbContext _flexReportDbContext;
     private readonly IOpenAIClient _openAIClient;
-    private readonly IDataAccess _dataAccess;
 
     public ReportService(
         IFlexReportDbContext flexReportDbContext,
@@ -28,7 +28,7 @@ public class ReportService : IReportService
     public async Task<CreateReportResponse> CreateReport(CreateReportRequest request)
     {
         var customer = _flexReportDbContext.Customers.FirstOrDefault(c => c.Id == request.CustomerId)
-            ?? throw new Exception("Customer was not found");
+                       ?? throw new Exception("Customer was not found");
 
         var schema = customer.DatabaseSchema;
 
@@ -47,18 +47,22 @@ public class ReportService : IReportService
         return new CreateReportResponse(newReportId, queryResponse);
     }
 
-    public async Task<IEnumerable<IEnumerable<string>>> ExecuteReport(int customerId, int reportId)
+    public async Task<ExecuteReportResponse> ExecuteReport(ExecuteReportRequest request)
     {
         var customer = _flexReportDbContext.Customers
-            .Include(c => c.Reports)
-            .FirstOrDefault(c => c.Id == customerId)
-            ?? throw new Exception("Customer was not found");
+                           .Include(c => c.Reports)
+                           .FirstOrDefault(c => c.Id == request.CustomerId)
+                       ?? throw new Exception("Customer was not found");
 
-        var report = customer.Reports!.FirstOrDefault(r => r.Id == reportId)
-            ?? throw new Exception("Report not found for the specified customer");
+        var report = customer.Reports!.FirstOrDefault(r => r.Id == request.ReportId)
+                     ?? throw new Exception("Report not found for the specified customer");
 
-        var result = await _dataAccess.GetData(customer.ConnectionString, report.Query);
+        var result = await _dataAccess.GetData(new GetDataRequest(
+            customer.ConnectionString,
+            report.Query,
+            request.Page,
+            request.PageSize));
 
-        return result.Select(res => res.GetValues());
+        return new ExecuteReportResponse(result.Data.Select(res => res.GetValues()), result.TotalCount);
     }
 }
