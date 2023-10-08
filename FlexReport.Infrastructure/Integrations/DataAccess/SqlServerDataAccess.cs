@@ -5,7 +5,7 @@ namespace FlexReport.Infrastructure.Integrations.DataAccess;
 
 public class SqlServerDataAccess : IDataAccess
 {
-    public async Task<IEnumerable<IDatabaseRecord>> GetData(string connectionString, string query)
+    public async Task<IEnumerable<IDatabaseRow>> GetData(string connectionString, string query)
     {
         using var connection = new SqlConnection(connectionString);
         connection.Open();
@@ -13,7 +13,7 @@ public class SqlServerDataAccess : IDataAccess
         using var command = new SqlCommand(query, connection);
         using var dataReader = await command.ExecuteReaderAsync();
 
-        var data = new List<SqlServerDataRecord>();
+        var data = new List<SqlServerDataRow>();
 
         while (await dataReader.ReadAsync())
         {
@@ -27,7 +27,7 @@ public class SqlServerDataAccess : IDataAccess
                 rowValues.Add(stringRepresentation);
             }
 
-            data.Add(new SqlServerDataRecord(rowValues));
+            data.Add(new SqlServerDataRow(rowValues));
             rowValues = new List<string>();
         }
 

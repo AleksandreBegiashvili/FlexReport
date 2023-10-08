@@ -2,5 +2,5 @@
 
 public interface IDataAccess
 {
-    Task<IEnumerable<IDatabaseRecord>> GetData(string connectionString, string query);
+    Task<IEnumerable<IDatabaseRow>> GetData(string connectionString, string query);
 }

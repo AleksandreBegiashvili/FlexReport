@@ -2,11 +2,11 @@
 
 namespace FlexReport.Infrastructure.Integrations.DataAccess;
 
-public class SqlServerDataRecord : IDatabaseRecord
+public class SqlServerDataRow : IDatabaseRow
 {
     private readonly List<string> _rowValues;
 
-    public SqlServerDataRecord(List<string> rowValues)
+    public SqlServerDataRow(List<string> rowValues)
     {
         _rowValues = rowValues;
     }
