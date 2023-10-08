@@ -2,7 +2,6 @@
 using FlexReport.Application.Models.Responses;
 using FlexReport.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using ExecuteReportRequest = FlexReport.API.Models.Requests.ExecuteReportRequest;
 
 namespace FlexReport.API.Controllers;
 
@@ -27,9 +26,9 @@ public class ReportController : ControllerBase
     }
 
     [HttpPost("Execute")]
-    public async Task<ActionResult<object>> ExecuteReport(ExecuteReportRequest request)
+    public async Task<ActionResult<ExecuteReportResponse>> ExecuteReport(ExecuteReportRequest request)
     {
-        var result = await _reportService.ExecuteReport(new Application.Models.Requests.ExecuteReportRequest(
+        var result = await _reportService.ExecuteReport(new ExecuteReportRequest(
             request.CustomerId,
             request.ReportId,
             request.Page,

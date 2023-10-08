@@ -2,5 +2,5 @@
 
 public interface IDatabaseRow
 {
-    IEnumerable<string> GetValues();
+    IEnumerable<string?> GetValues();
 }

@@ -50,7 +50,7 @@ public class SqlServerDataAccess : IDataAccess
         var limit = pageSize;
         return @$"SELECT * FROM
                   ({query}) m
-                  ORDER BY (select null)
+                  ORDER BY (SELECT NULL)
                   OFFSET {offset} ROWS FETCH NEXT {limit} ROWS ONLY";
     }
 
