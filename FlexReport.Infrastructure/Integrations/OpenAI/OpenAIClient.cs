@@ -57,13 +57,13 @@ public class OpenAIClient : IOpenAIClient
         var startIndex = message.IndexOf(OpenAIConstants.SqlStartSeparator);
         var endIndex = message.LastIndexOf(OpenAIConstants.SqlEndSeparator);
 
-        if (startIndex == -1 || endIndex == -1)
+        if (startIndex != -1 && endIndex != -1)
         {
-            throw new InvalidChatGptResponseException();
+            return message[(startIndex + OpenAIConstants.SqlStartSeparator.Length)..endIndex];
+            //throw new InvalidChatGptResponseException();
         }
 
-        var query = message[(startIndex + OpenAIConstants.SqlStartSeparator.Length)..endIndex];
 
-        return query;
+        return message;
     }
 }
