@@ -13,9 +13,9 @@ public class OpenAIClient : IOpenAIClient
     private const double _temperature = 0.7;
     private const string _systemMessage = "You are an AI assistant tasked to generate SQL queries given database schema and prompt.";
     private const string _explanation = "Let's think step by step:" +
-        "1. Analyze the provided database schema" +
-        "2. Correctly use column names and pay attention to junction tables for many-to-many relationships" +
-        "3. Generate the correct SQL query based on the prompt, think twice.";
+        "1. Analyze the provided database schema;" +
+        "2. Correctly use column names and pay attention to junction tables for many-to-many relationships;" +
+        "3. Generate the correct SQL query based on the prompt, think twice;";
 
     public async Task<string> SendMessage(string schema, string prompt)
     {
@@ -25,15 +25,8 @@ public class OpenAIClient : IOpenAIClient
         var request = BuildChatRequest(schema, prompt);
         var result = await api.Chat.CreateChatCompletionAsync(request);
 
-        var queryMessage = result.Choices[result.Choices.Count - 1]?.Message?.Content;
-
-        if (string.IsNullOrWhiteSpace(queryMessage))
-        {
-            throw new Exception("Failed to receive response from ChatGPT");
+        return ExtractQuery(result);
         }
-
-        return queryMessage;
-    }
 
     private static ChatRequest BuildChatRequest(string schema, string prompt)
         => new()
@@ -50,4 +43,24 @@ public class OpenAIClient : IOpenAIClient
                 new ChatMessage(ChatMessageRole.User, $"Write the SQL query based on above schema for the following prompt: {prompt}")
             }
         };
+
+    private static string ExtractQuery(ChatResult result)
+    {
+        const string startSeparator = "```sql";
+        const string endSeparator = "```";
+
+        var message = result.Choices[result.Choices.Count - 1]?.Message?.Content;
+
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            throw new Exception("Failed to receive response from ChatGPT");
+        }
+
+        var startIndex = message.IndexOf(startSeparator);
+        var endIndex = message.LastIndexOf(endSeparator);
+
+        var query = message[(startIndex + startSeparator.Length)..endIndex];
+
+        return query;
+    }
 }
