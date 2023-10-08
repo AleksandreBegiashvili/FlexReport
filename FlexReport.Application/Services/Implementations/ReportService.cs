@@ -42,9 +42,9 @@ public class ReportService : IReportService
         };
 
         _flexReportDbContext.Reports.Add(report);
-        var newReportId = await _flexReportDbContext.SaveChangesAsync(CancellationToken.None);
+        await _flexReportDbContext.SaveChangesAsync(CancellationToken.None);
 
-        return new CreateReportResponse(newReportId, queryResponse);
+        return new CreateReportResponse(report.Id, queryResponse);
     }
 
     public async Task<ExecuteReportResponse> ExecuteReport(ExecuteReportRequest request)
