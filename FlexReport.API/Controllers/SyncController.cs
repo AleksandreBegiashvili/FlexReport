@@ -26,7 +26,7 @@ public class SyncController : ControllerBase
 
         return Ok(new
         {
-            CusomterId = customerId
+            customerId
         });
     }
 }

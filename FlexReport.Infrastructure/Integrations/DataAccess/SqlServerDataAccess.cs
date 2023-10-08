@@ -25,11 +25,18 @@ public class SqlServerDataAccess : IDataAccess
         await using var dataReader = await command.ExecuteReaderAsync();
 
         var data = new List<SqlServerDataRow>();
+        var headers = new List<string?>();
+        var isFirstIteration = true;
 
         while (await dataReader.ReadAsync())
         {
             var columnCount = dataReader.VisibleFieldCount;
             var rowValues = new List<string?>();
+
+            if (isFirstIteration)
+            {
+                headers = GetColumnHeaders(dataReader);
+            }
 
             for (var i = 0; i < columnCount; i++)
             {
@@ -39,9 +46,23 @@ public class SqlServerDataAccess : IDataAccess
             }
 
             data.Add(new SqlServerDataRow(rowValues));
+            isFirstIteration = false;
         }
 
-        return new GetDataResponse(data, totalCount);
+        return new GetDataResponse(headers, data, totalCount);
+    }
+
+    private static List<string?> GetColumnHeaders(SqlDataReader dataReader)
+    {
+        var headerValues = new List<string?>();
+
+        for (var i = 0; i < dataReader.VisibleFieldCount; i++)
+        {
+            var fieldName = dataReader.GetName(i);
+            headerValues.Add(fieldName);
+        }
+
+        return headerValues;
     }
 
     private static string BuildPagedQuery(string query, int page, int pageSize)

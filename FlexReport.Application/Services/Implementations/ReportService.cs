@@ -63,6 +63,9 @@ public class ReportService : IReportService
             request.Page,
             request.PageSize));
 
-        return new ExecuteReportResponse(result.Data.Select(res => res.GetValues()), result.TotalCount);
+        return new ExecuteReportResponse(
+            result.Headers,
+            result.Data.Select(res => res.GetValues()),
+            result.TotalCount);
     }
 }
