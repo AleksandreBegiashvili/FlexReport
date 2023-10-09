@@ -1,36 +1,27 @@
-﻿using FlexReport.API.Models.Requests;
-using FlexReport.Application.Models.Requests;
-using FlexReport.Application.Models.Responses;
-using FlexReport.Application.Services.Abstractions;
+﻿using FlexReport.API.Handlers;
+using FlexReport.Application.Reports.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;
 
 [Route("api/report")]
 [ApiController]
+[ApiExceptionFilter]
 public class ReportController : ControllerBase
 {
-    private readonly IReportService _reportService;
+    private readonly IMediator _mediator;
 
-    public ReportController(IReportService reportService)
+    public ReportController(IMediator mediator)
     {
-        _reportService = reportService;
+        _mediator = mediator;
     }
 
     [HttpPost]
-    public async Task<ActionResult<CreateReportResponse>> CreateReport(CreateReportRequest request)
-    {
-        var createReportRequest = new CreateReportRequest(request.CustomerId, request.Prompt);
-        var result = await _reportService.CreateReport(createReportRequest);
+    public async Task<ActionResult<ReportDto>> CreateReport(CreateReportCommand command) =>
+        Ok(await _mediator.Send(command));
 
-        return Ok(result);
-    }
-
-    [HttpPost("Execute")]
-    public async Task<ActionResult<object>> ExecuteReport(ExecuteReportRequest request)
-    {
-        var result = await _reportService.ExecuteReport(request.CustomerId, request.ReportId);
-
-        return Ok(result);
-    }
+    [HttpPost("execute")]
+    public async Task<ActionResult<ExecutedReportDto>> ExecuteReport(ExecuteReportCommand command) =>
+        Ok(await _mediator.Send(command));
 }

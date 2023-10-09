@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexReport.API", "FlexReport.API\FlexReport.API.csproj", "{FF6AFB0A-E749-436A-A8A8-37741C3EE056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexReport.API", "FlexReport.API\FlexReport.API.csproj", "{FF6AFB0A-E749-436A-A8A8-37741C3EE056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexReport.Domain", "FlexReport.Domain\FlexReport.Domain.csproj", "{A9CBB182-872C-4F90-B115-B8E10762A86B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexReport.Domain", "FlexReport.Domain\FlexReport.Domain.csproj", "{A9CBB182-872C-4F90-B115-B8E10762A86B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexReport.Application", "FlexReport.Application\FlexReport.Application.csproj", "{011B5B9C-AC0B-4D23-BD56-AC892CE073D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexReport.Application", "FlexReport.Application\FlexReport.Application.csproj", "{011B5B9C-AC0B-4D23-BD56-AC892CE073D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexReport.Infrastructure", "FlexReport.Infrastructure\FlexReport.Infrastructure.csproj", "{7DB51FE2-12D7-4043-9B5E-BF8AA0ED6B1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexReport.Infrastructure", "FlexReport.Infrastructure\FlexReport.Infrastructure.csproj", "{7DB51FE2-12D7-4043-9B5E-BF8AA0ED6B1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{077CAD9B-6A29-404D-BE74-4E280031C70E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexReport.Infrastructure.Tests", "tests\FlexReport.Infrastructure.Tests\FlexReport.Infrastructure.Tests.csproj", "{8C63559B-D22A-4220-AAD4-AE467EFFB9B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{7DB51FE2-12D7-4043-9B5E-BF8AA0ED6B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DB51FE2-12D7-4043-9B5E-BF8AA0ED6B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DB51FE2-12D7-4043-9B5E-BF8AA0ED6B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C63559B-D22A-4220-AAD4-AE467EFFB9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C63559B-D22A-4220-AAD4-AE467EFFB9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C63559B-D22A-4220-AAD4-AE467EFFB9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C63559B-D22A-4220-AAD4-AE467EFFB9B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C63559B-D22A-4220-AAD4-AE467EFFB9B5} = {077CAD9B-6A29-404D-BE74-4E280031C70E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5DAF3D57-0735-4223-8389-D05D60B668BD}

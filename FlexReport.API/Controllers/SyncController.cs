@@ -1,32 +1,23 @@
-﻿using FlexReport.API.Models.Requests;
-using FlexReport.Application.Models.Requests;
-using FlexReport.Application.Services.Abstractions;
+﻿using FlexReport.API.Handlers;
+using FlexReport.Application.Customers.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexReport.API.Controllers;
 
 [Route("api/sync")]
 [ApiController]
+[ApiExceptionFilter]
 public class SyncController : ControllerBase
 {
-    private readonly ICustomerService _customerService;
+    private readonly IMediator _mediator;
 
-    public SyncController(ICustomerService customerService)
+    public SyncController(IMediator mediator)
     {
-        _customerService = customerService;
+        _mediator = mediator;
     }
 
     [HttpPost("customer")]
-    public async Task<IActionResult> SynchronizeCustomer([FromBody] SyncRequest request)
-    {
-        var customerId = await _customerService.SynchronizeCustomer(
-            new SynchronizeCustomerRequest(
-                request.Name,
-                request.DbConnectionString));
-
-        return Ok(new
-        {
-            CusomterId = customerId
-        });
-    }
+    public async Task<IActionResult> SynchronizeCustomer(SynchronizeCustomerCommand command) =>
+        Ok(await _mediator.Send(command));
 }

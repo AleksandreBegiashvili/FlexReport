@@ -1,3 +1,5 @@
+using System.Reflection;
+using FlexReport.API.Handlers;
 using FlexReport.Application.Extensions;
 using FlexReport.Infrastructure.Extensions;
 
@@ -12,6 +14,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         policy => { policy.AllowAnyOrigin(); });
 });
+
+builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
